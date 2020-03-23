@@ -15,7 +15,7 @@
 
 define( 'AMP__FILE__', __FILE__ );
 define( 'AMP__DIR__', dirname( __FILE__ ) );
-define( 'AMP__VERSION', '1.5.0-alpha' );
+define( 'AMP__VERSION', '1.5.0.1-alpha' );
 
 /**
  * Errors encountered while loading the plugin.
