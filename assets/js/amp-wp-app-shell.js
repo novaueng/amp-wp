@@ -255,30 +255,42 @@
 					}
 				} );
 
-				const reader = response.body.getReader();
-				const decoder = new TextDecoder();
+				if( response.body ) {
 
-				function readChunk() {
-					return reader.read().then( chunk => {
-						const input = chunk.value || new Uint8Array();
-						const text = decoder.decode(
-							input,
-							{
-								stream: ! chunk.done
+					const reader = response.body.getReader();
+					const decoder = new TextDecoder();
+
+					function readChunk() {
+						return reader.read().then( chunk => {
+							const input = chunk.value || new Uint8Array();
+							const text = decoder.decode(
+								input,
+								{
+									stream: ! chunk.done
+								}
+							);
+							if ( text ) {
+								currentShadowDoc.writer.write( text );
 							}
-						);
-						if ( text ) {
-							currentShadowDoc.writer.write( text );
-						}
-						if ( chunk.done ) {
-							currentShadowDoc.writer.close();
-						} else {
-							return readChunk();
-						}
-					} );
+							if ( chunk.done ) {
+								currentShadowDoc.writer.close();
+							} else {
+								return readChunk();
+							}
+						} );
+					}
+
+					return readChunk();
+
+				} else {
+
+					const res = response.text().then(function( text ) {
+						currentShadowDoc.writer.write( text );
+						currentShadowDoc.writer.close();
+					});
+
 				}
 
-				return readChunk();
 			} )
 			.catch( ( error ) => {
 				if ( 'amp_unavailable' === error ) {
