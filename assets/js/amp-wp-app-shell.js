@@ -183,18 +183,23 @@
 
 				// @todo If it is not an AMP document, then the loaded document needs to break out of the app shell. This should be done in readChunk() below.
 				currentShadowDoc.ampdoc.whenReady().then( () => {
-					let currentUrl;
-					if ( currentShadowDoc.canonicalUrl ) {
-						currentUrl = new URL( currentShadowDoc.canonicalUrl );
+					let currentUrl new URL( url );
 
-						// Prevent updating the URL if the canonical URL is for the error template.
-						// @todo The rel=canonical link should not be output for these templates.
-						if ( currentUrl.searchParams.has( 'wp_error_template' ) ) {
-							currentUrl = currentUrl.href = url;
-						}
-					} else {
-						currentUrl = new URL( url );
-					}
+					// Toby - 17/4/20
+					// Removed to allow querystring params in the URL
+					// https://github.com/ampproject/amp-wp/issues/4376
+					//
+					// if ( currentShadowDoc.canonicalUrl ) {
+					// 	currentUrl = new URL( currentShadowDoc.canonicalUrl );
+
+					// 	// Prevent updating the URL if the canonical URL is for the error template.
+					// 	// @todo The rel=canonical link should not be output for these templates.
+					// 	if ( currentUrl.searchParams.has( 'wp_error_template' ) ) {
+					// 		currentUrl = currentUrl.href = url;
+					// 	}
+					// } else {
+					// 	currentUrl = new URL( url );
+					// }
 
 					// Update the nav menu classes if the final URL has redirected somewhere else.
 					if ( currentUrl.toString() !== url.toString() ) {
