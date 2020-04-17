@@ -183,7 +183,7 @@
 
 				// @todo If it is not an AMP document, then the loaded document needs to break out of the app shell. This should be done in readChunk() below.
 				currentShadowDoc.ampdoc.whenReady().then( () => {
-					let currentUrl new URL( url );
+					let currentUrl = new URL( url );
 
 					// Toby - 17/4/20
 					// Removed to allow querystring params in the URL
